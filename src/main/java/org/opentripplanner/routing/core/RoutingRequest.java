@@ -308,17 +308,7 @@ public class RoutingRequest implements Cloneable, Serializable {
     /** Penalty for using a non-preferred transfer */
     public int nonpreferredTransferPenalty = 180;
 
-    /**
-     * For the bike triangle, how important time is. 
-     * triangleTimeFactor+triangleSlopeFactor+triangleSafetyFactor == 1
-     */
-    public double triangleTimeFactor;
-
-    /** For the bike triangle, how important slope is */
-    public double triangleSlopeFactor;
-
-    /** For the bike triangle, how important safety is */
-    public double triangleSafetyFactor;
+    public BikeTriangle bikeTriangle;
 
     /** Options specifically for the case that you are walking a bicycle. */
     public RoutingRequest bikeWalkingOptions;
@@ -774,21 +764,6 @@ public class RoutingRequest implements Cloneable, Serializable {
         this.intermediatePlaces.add(location);
     }
 
-    public void setTriangleSafetyFactor(double triangleSafetyFactor) {
-        this.triangleSafetyFactor = triangleSafetyFactor;
-        bikeWalkingOptions.triangleSafetyFactor = triangleSafetyFactor;
-    }
-
-    public void setTriangleSlopeFactor(double triangleSlopeFactor) {
-        this.triangleSlopeFactor = triangleSlopeFactor;
-        bikeWalkingOptions.triangleSlopeFactor = triangleSlopeFactor;
-    }
-
-    public void setTriangleTimeFactor(double triangleTimeFactor) {
-        this.triangleTimeFactor = triangleTimeFactor;
-        bikeWalkingOptions.triangleTimeFactor = triangleTimeFactor;
-    }
-
     public NamedPlace getFromPlace() {
         return this.from.getNamedPlace();
     }
@@ -930,9 +905,9 @@ public class RoutingRequest implements Cloneable, Serializable {
                 && nonpreferredTransferPenalty == other.nonpreferredTransferPenalty
                 && otherThanPreferredRoutesPenalty == other.otherThanPreferredRoutesPenalty
                 && useUnpreferredRoutesPenalty == other.useUnpreferredRoutesPenalty
-                && triangleSafetyFactor == other.triangleSafetyFactor
-                && triangleSlopeFactor == other.triangleSlopeFactor
-                && triangleTimeFactor == other.triangleTimeFactor
+                && bikeTriangle.getTriangleSafetyFactor() == other.bikeTriangle.getTriangleSafetyFactor()
+                && bikeTriangle.getTriangleSlopeFactor() == other.bikeTriangle.getTriangleSlopeFactor()
+                && bikeTriangle.getTriangleTimeFactor() == other.bikeTriangle.getTriangleTimeFactor()
                 && stairsReluctance == other.stairsReluctance
                 && elevatorBoardTime == other.elevatorBoardTime
                 && elevatorBoardCost == other.elevatorBoardCost
@@ -974,9 +949,9 @@ public class RoutingRequest implements Cloneable, Serializable {
                 + walkBoardCost + bikeBoardCost + bannedRoutes.hashCode()
                 + bannedTrips.hashCode() * 1373 + transferSlack * 20996011
                 + (int) nonpreferredTransferPenalty + (int) transferPenalty * 163013803
-                + new Double(triangleSafetyFactor).hashCode() * 195233277
-                + new Double(triangleSlopeFactor).hashCode() * 136372361
-                + new Double(triangleTimeFactor).hashCode() * 790052899
+                + new Double(bikeTriangle.getTriangleSafetyFactor()).hashCode() * 195233277
+                + new Double(bikeTriangle.getTriangleSlopeFactor()).hashCode() * 136372361
+                + new Double(bikeTriangle.getTriangleTimeFactor()).hashCode() * 790052899
                 + new Double(stairsReluctance).hashCode() * 315595321
                 + maxPreTransitTime * 63061489
                 + new Long(clampInitialWait).hashCode() * 209477
@@ -1196,9 +1171,9 @@ public class RoutingRequest implements Cloneable, Serializable {
         safe /= total;
         slope /= total;
         time /= total;
-        this.triangleSafetyFactor = safe;
-        this.triangleSlopeFactor = slope;
-        this.triangleTimeFactor = time;
+        this.bikeTriangle.setTriangleSafetyFactor(safe);
+        this.bikeTriangle.setTriangleSlopeFactor(slope);
+        this.bikeTriangle.setTriangleTimeFactor(time);
     }
 
     /** Create a new ShortestPathTree instance using the DominanceFunction specified in this RoutingRequest. */

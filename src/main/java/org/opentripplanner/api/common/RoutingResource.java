@@ -460,9 +460,12 @@ public abstract class RoutingResource {
                 if (Math.abs(triangleSafetyFactor+ triangleSlopeFactor + triangleTimeFactor - 1) > Math.ulp(1) * 3) {
                     throw new ParameterException(Message.TRIANGLE_NOT_AFFINE);
                 }
-                request.setTriangleSafetyFactor(triangleSafetyFactor);
-                request.setTriangleSlopeFactor(triangleSlopeFactor);
-                request.setTriangleTimeFactor(triangleTimeFactor);
+                request.bikeTriangle.setTriangleSafetyFactor(triangleSafetyFactor);
+                request.bikeTriangle.setTriangleSlopeFactor(triangleSlopeFactor);
+                request.bikeTriangle.setTriangleTimeFactor(triangleTimeFactor);
+                request.bikeWalkingOptions.setTriangleSafetyFactor(triangleSafetyFactor);
+                request.bikeWalkingOptions.setTriangleSlopeFactor(triangleSlopeFactor);
+                request.bikeWalkingOptions.setTriangleTimeFactor(triangleTimeFactor);
             }
         }
 
