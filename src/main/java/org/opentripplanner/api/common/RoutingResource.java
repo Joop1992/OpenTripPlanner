@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.onebusaway.gtfs.model.AgencyAndId;
 import org.opentripplanner.api.parameter.QualifiedModeSet;
+import org.opentripplanner.routing.core.BikeTriangle;
 import org.opentripplanner.routing.core.OptimizeType;
 import org.opentripplanner.routing.core.RoutingRequest;
 import org.opentripplanner.routing.request.BannedStopSet;
@@ -460,12 +461,15 @@ public abstract class RoutingResource {
                 if (Math.abs(triangleSafetyFactor+ triangleSlopeFactor + triangleTimeFactor - 1) > Math.ulp(1) * 3) {
                     throw new ParameterException(Message.TRIANGLE_NOT_AFFINE);
                 }
-                request.bikeTriangle.setTriangleSafetyFactor(triangleSafetyFactor);
-                request.bikeTriangle.setTriangleSlopeFactor(triangleSlopeFactor);
-                request.bikeTriangle.setTriangleTimeFactor(triangleTimeFactor);
-                request.bikeWalkingOptions.setTriangleSafetyFactor(triangleSafetyFactor);
-                request.bikeWalkingOptions.setTriangleSlopeFactor(triangleSlopeFactor);
-                request.bikeWalkingOptions.setTriangleTimeFactor(triangleTimeFactor);
+                BikeTriangle bikeTriangle = request.bikeTriangle;
+                RoutingRequest bikeWalkingOptions = request.bikeWalkingOptions;
+                BikeTriangle bikeWalkingOptionsTriangle = bikeWalkingOptions.bikeTriangle;
+                bikeTriangle.setTriangleSafetyFactor(triangleSafetyFactor);
+                bikeTriangle.setTriangleSlopeFactor(triangleSlopeFactor);
+                bikeTriangle.setTriangleTimeFactor(triangleTimeFactor);
+                bikeWalkingOptionsTriangle.setTriangleSafetyFactor(triangleSafetyFactor);
+                bikeWalkingOptionsTriangle.setTriangleSlopeFactor(triangleSlopeFactor);
+                bikeWalkingOptionsTriangle.setTriangleTimeFactor(triangleTimeFactor);
             }
         }
 

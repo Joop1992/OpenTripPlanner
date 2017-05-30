@@ -764,6 +764,7 @@ public class RoutingRequest implements Cloneable, Serializable {
         this.intermediatePlaces.add(location);
     }
 
+
     public NamedPlace getFromPlace() {
         return this.from.getNamedPlace();
     }
