@@ -67,7 +67,7 @@ public class RoutingRequest implements Cloneable, Serializable {
     /* FIELDS UNIQUELY IDENTIFYING AN SPT REQUEST */
 
     /** The complete list of incoming query parameters. */
-    public final HashMap<String, String> parameters = new HashMap<String, String>();
+    public final Map<String, String> parameters = new HashMap<String, String>();
 
     /** The router ID -- internal ID to switch between router implementation (or graphs) */
     public String routerId = "";
@@ -85,29 +85,29 @@ public class RoutingRequest implements Cloneable, Serializable {
      * The maximum distance (in meters) the user is willing to walk for access/egress legs.
      * Defaults to unlimited.
      */
-    public double maxWalkDistance = Double.MAX_VALUE;
+    public static double maxWalkDistance = Double.MAX_VALUE;
 
     /**
      * The maximum distance (in meters) the user is willing to walk for transfer legs.
      * Defaults to unlimited. Currently set to be the same value as maxWalkDistance.
      */
-    public double maxTransferWalkDistance = Double.MAX_VALUE;
+    public static double maxTransferWalkDistance = Double.MAX_VALUE;
 
     /**
      * The maximum time (in seconds) of pre-transit travel when using drive-to-transit (park and
      * ride or kiss and ride). By default limited to 30 minutes driving, because if it's unlimited on
      * large graphs the search becomes very slow.
      */
-    public int maxPreTransitTime = 30 * 60;
+    public static int maxPreTransitTime = 30 * 60;
 
     /** The worst possible time (latest for depart-by and earliest for arrive-by) to accept */
-    public long worstTime = Long.MAX_VALUE;
+    public static long worstTime = Long.MAX_VALUE;
 
     /** The worst possible weight that we will accept when planning a trip. */
-    public double maxWeight = Double.MAX_VALUE;
+    public static double maxWeight = Double.MAX_VALUE;
 
     /** The maximum duration of a returned itinerary, in hours. */
-    public double maxHours = Double.MAX_VALUE;
+    public static double maxHours = Double.MAX_VALUE;
 
     /** The set of TraverseModes that a user is willing to use. Defaults to WALK | TRANSIT. */
     public TraverseModeSet modes = new TraverseModeSet("TRANSIT,WALK"); // defaults in constructor overwrite this
